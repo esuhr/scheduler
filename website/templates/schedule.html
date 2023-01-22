@@ -1,0 +1,116 @@
+{% extends "base.html" %} 
+{% block title %}Schedule{% endblock %} 
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <br /><br /><br />
+            <h5>Schedule</h5>
+            <br />
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Student Name:</label>
+                    <select name="name" id="name">
+                    {% for student in user.students %}
+                        <option value="{{student.name}}">{{student.name}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tz">Select timezone:</label>
+                    <select name="tz" id="tz">
+                        <option value="Asia/Seoul">Asia/Seoul</option>
+                        <option value="US/Pacific">US/Pacific</option>
+                        <option value="US/Hawaii">US/Hawaii</option>
+                        <option value="US/Mountain">US/Mountain</option>
+                        <option value="US/Central">US/Central</option>
+                        <option value="US/Eastern">US/Eastern</option>
+                        <option value="Asia/Shanghai">Asia/Shanghai</option>
+                        <option value="Europe/London">Europe/London</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Start Date</label>
+                    <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Enter start date eg. Jan 1 2022 1:00PM" required>
+                </div>
+                <div class="form-group">
+                    <label for="length">Lesson length (in minutes)</label>
+                    <input type="length" class="form-control" id="length" name="length" placeholder="In minutes" value="60" required>
+                </div>
+                <br />
+                <div align="center">
+                    <button type="submit" class="btn btn-primary">Add Lesson</button>
+                </div>
+                <br /><br />
+            </form>
+            {% if user.lessons %}
+            <table type="schedule" class="table table-hover table-sm">
+                <tr>
+                    <th scope="col"><small>Student Name</small></th>
+                    <th scope="col"><small>Organization</small></th>
+                    <th scope="col"><small>Minutes</small></th>
+                </tr>
+                {% for lesson in user.lessons|sort(attribute='user_dtz', reverse = True) %}
+                <tr>
+                    <td>{{lesson.student.name}}</td>
+                    <td>{{lesson.student.org}}</td>
+                    <td>{{lesson.length}}</td>
+            
+                    <td>
+                        <button type="button" class="btn-close" aria-label="Close" onClick="deleteLesson({{ lesson.id }})"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"><small>{{lesson.student.tz}} {{lesson.student_dtz}} - {{lesson.student_dtz_end}}</small></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><small>{{lesson.tz}} {{lesson.user_dtz}} - {{lesson.user_dtz_end}}</small></td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="col">
+            <body>
+                <br />
+                <div id="calendar"></div>
+                <script>
+            
+                    document.addEventListener('DOMContentLoaded', function() {
+                      var calendarEl = document.getElementById('calendar');
+                      var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'timeGridWeek',
+                        selectable: false,
+                        headerToolbar: { center: 'dayGridMonth,timeGridWeek' },
+                        events: [
+                            {% for event in events %}
+                                {
+                                    title: '{{ event.student.name }}',
+                                    start: '{{ event.user_dtz }}',
+                                    end: '{{ event.user_dtz_end }}',
+                                },
+                            {% endfor %}
+                        ],
+                        contentHeight: 800,
+                        themeSystem: 'bootstrap5',
+                        nowIndicator: true,
+
+                      });
+                      calendar.render();
+                    });
+              
+                  </script>
+            </body>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

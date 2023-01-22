@@ -1,0 +1,37 @@
+body {
+    font-family: 'Neue Helvetica', 'Helvetica', sans-serif;
+    font-weight: 100;
+    font-size: .8em;
+    letter-spacing: .5pt;
+    line-height: 2;
+}
+
+.table-light td {
+    background-color: white;
+}
+
+.table-light th {
+    background-color: white;
+}
+
+.fc table {
+    border-spacing: 0;
+    font-size: 1em;
+}
+
+.form-control {
+    font-size: 1em;
+}
+
+.btn {
+    font-weight: 100;
+    font-size: 1em;
+}
+
+.fc-day-today {
+    background: rgb(255, 232, 232) !important;
+    border: none !important;
+} 
+
+
+

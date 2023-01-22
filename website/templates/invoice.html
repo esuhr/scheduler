@@ -1,0 +1,69 @@
+{% extends "base.html" %} 
+{% block title %}Invoice{% endblock %} 
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+        <br /><br /><br />
+            <h5>Invoice</h5>
+            <br />
+            <form method="POST">
+                <div class="form-group">
+                    <label for="org">Organization</label>
+                    <select name="org" id="org">
+                        <option value="all">All</option>
+                    {% for student in user.students %}
+                        <option value="{{student.org }}">{{student.org}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startdate">Start Date</label>
+                    <input type="date" class="form-control" id="startdate" name="startdate" placeholder="Enter start date" required>
+                </div>
+                <div class="form-group">
+                    <label for="enddate">End Date</label>
+                    <input type="date" class="form-control" id="enddate" name="enddate" placeholder="Enter end date" required>
+                </div>
+                <br />
+                <div align="center">
+                    <button type="submit" class="btn btn-primary">Get invoice</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm">
+            {% if lessons %}
+            <table id="tableId" type="student" class="table table-light table-hover">
+                <tr>
+                    <th scope="col"><small>Name</small></th>
+                    <th scope="col"><small>Time</small></th>
+                    <th scope="col"><small>Lesson length</small></th>
+                    <th scope="col"><small>Rate</small></th>
+                </tr>
+            
+                {% for lesson in lessons|sort(attribute='student_dtz', reverse = True) %}
+                <tr>
+                    <td>{{lesson.student.name}}</td>
+                    <td>{{lesson.student_dtz}}</td>
+                    <td>{{lesson.length}}</td>
+                    <td>{{lesson.student.rate}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4" class="table-info">Total for {{startdate}} to {{enddate}} is {{total}} KRW</td>
+                </tr>
+            </table>
+            <input type="button" value="Copy Invoice" onclick="selectElementContents( document.getElementById('tableId') );">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

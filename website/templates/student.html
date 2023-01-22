@@ -1,0 +1,85 @@
+{% extends "base.html" %} 
+{% block title %}Students{% endblock %} 
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <br /><br /><br />
+            <h5>Add student</h5>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Student Name</label>
+                    <input type="name" class="form-control" id="name" name="name" placeholder="Enter student name">
+                </div>
+                <div class="form-group">
+                    <label for="org">Organization</label>
+                    <input type="org" class="form-control" id="org" name="org" placeholder="Enter organization name">
+                </div>
+                <div class="form-group">
+                    <label for="contactmethod">Contact Method</label>
+                    <input type="contactmethod" class="form-control" id="contactmethod" name="contactmethod" placeholder="Enter contact method eg. Discord, Email, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="contactinfo">Contact Info</label>
+                    <input type="contactinfo" class="form-control" id="contactinfo" name="contactinfo" placeholder="Enter contact info">
+                </div>
+                <div class="form-group">
+                    <label for="rate">Rate</label>
+                    <input type="number" class="form-control" id="rate" name="rate" placeholder="Enter hourly rate in KRW">
+                </div>
+                <div class="form-group">
+                    <label for="tz">Select timezone:</label>
+                    <select name="tz" id="tz">
+                        <option value="Asia/Seoul">Asia/Seoul</option>
+                        <option value="US/Pacific">US/Pacific</option>
+                        <option value="US/Hawaii">US/Hawaii</option>
+                        <option value="US/Mountain">US/Mountain</option>
+                        <option value="US/Central">US/Central</option>
+                        <option value="US/Eastern">US/Eastern</option>
+                        <option value="Asia/Shanghai">Asia/Shanghai</option>
+                        <option value="Europe/London">Europe/London</option>
+                    </select>
+                </div>
+                <br />
+                <div align="center">
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm">
+            {% if user.students %}
+            <table type="student" class="table table-light table-hover">
+                <tr>
+                    <th scope="col"><small>Student Name</small></th>
+                    <th scope="col"><small>Organization</small></th>
+                    <th scope="col"><small>Timezone</small></th>
+                    <th scope="col"><small>Contact Method</small></th>
+                    <th scope="col"><small>Contact Info</small></th>
+                    <th scope="col"><small>Rate</small></th>
+                </tr>
+                {% for student in user.students %}
+                <tr>
+                    <td>{{student.name}}</td>
+                    <td>{{student.org}}</td>
+                    <td>{{student.tz}}</td>
+                    <td>{{student.contactmethod}}</td>
+                    <td>{{student.contactinfo}}</td>
+                    <td>{{student.rate}}</td>
+                    <td>
+                        <button type="button" class="btn-close" onClick="deleteStudent({{ student.id }})">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
